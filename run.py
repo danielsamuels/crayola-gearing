@@ -1,4 +1,5 @@
 from cStringIO import StringIO
+import hashlib
 import os
 import pickle
 import requests
@@ -31,6 +32,7 @@ ITEM_SLOTS = [
     'trinket1',
     'trinket2'
 ]
+
 
 class Runner(object):
 
@@ -65,13 +67,11 @@ class Runner(object):
             for character in self.get_characters()
         ]
 
-
     def build_classes(self):
         api_classes = requests.get('http://eu.battle.net/api/wow/data/character/classes').json()['classes']
 
         for cls in api_classes:
             self.classes[cls['id']] = cls['name']
-
 
     def get_characters(self):
         url = u'{base_api_url}/guild/{realm}/{guild}?fields=members'.format(
@@ -86,10 +86,9 @@ class Runner(object):
             and member['character']['level'] == 100
         ]
 
-
     def get_character(self, character):
         # print u'Processing {}'.format(character['name'])
-        pickle_file = u'pickles/{}.txt'.format(character['name'])
+        pickle_file = u'pickles/{}.txt'.format(hashlib.md5(character['name']))
 
         try:
             return pickle.load(file(pickle_file))
