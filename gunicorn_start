@@ -12,7 +12,7 @@ echo "Starting $NAME as `whoami`"
 
 # Activate the virtual environment
 cd $DIR
-source /var/www/ci.posix.me/venv/bin/activate
+source /var/www/ci.posix.me/.venv/bin/activate
 export PYTHONPATH=$DIR:$PYTHONPATH
 
 # Create the run directory if it doesn't exist
