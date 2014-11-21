@@ -6,7 +6,7 @@ SOCKFILE=/var/www/ci.posix.me/run/gunicorn.sock # we will communicte using this 
 USER=daniel                                     # the user to run as
 GROUP=daniel                                    # the group to run as
 NUM_WORKERS=`expr 2 \* \`cat /proc/cpuinfo | grep Processor | wc -l\` + 1` # how many worker processes should Gunicorn spawn
-WSGI_MODULE=hooks
+WSGI_MODULE=web
 
 echo "Starting $NAME as `whoami`"
 
