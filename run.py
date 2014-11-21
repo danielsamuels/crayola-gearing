@@ -1,3 +1,4 @@
+from cStringIO import StringIO
 import os
 import pickle
 import requests
@@ -64,11 +65,6 @@ class Runner(object):
             for character in self.get_characters()
         ]
 
-        # Output as CSV.
-        self.output_csv()
-
-        print 'All done!'
-
 
     def build_classes(self):
         api_classes = requests.get('http://eu.battle.net/api/wow/data/character/classes').json()['classes']
@@ -92,7 +88,7 @@ class Runner(object):
 
 
     def get_character(self, character):
-        print u'Processing {}'.format(character['name'])
+        # print u'Processing {}'.format(character['name'])
         pickle_file = u'pickles/{}.txt'.format(character['name'])
 
         try:
@@ -163,12 +159,15 @@ class Runner(object):
 
 
     def output_csv(self):
-        print 'Writing CSV'
-        with open('output.csv', 'wb') as f:
-            w = unicodecsv.writer(f, encoding='utf-8')
+        # print 'Writing CSV'
+        f = StringIO()
+        w = unicodecsv.writer(f, encoding='utf-8')
 
-            for row in self.parsed_characters:
-                w.writerow(row)
+        for row in self.parsed_characters:
+            w.writerow(row)
+
+        f.seek(0)
+        return f
 
 if __name__ == '__main__':
     Runner()

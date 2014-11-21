@@ -1,0 +1,29 @@
+#!/bin/bash
+
+NAME="ci.posix.me"                              # Name of the application
+DIR=/var/www/ci.posix.me/                       # Django project directory
+SOCKFILE=/var/www/ci.posix.me/run/gunicorn.sock # we will communicte using this unix socket
+USER=daniel                                     # the user to run as
+GROUP=daniel                                    # the group to run as
+NUM_WORKERS=`expr 2 \* \`cat /proc/cpuinfo | grep Processor | wc -l\` + 1` # how many worker processes should Gunicorn spawn
+WSGI_MODULE=hooks
+
+echo "Starting $NAME as `whoami`"
+
+# Activate the virtual environment
+cd $DIR
+source /var/www/ci.posix.me/venv/bin/activate
+export PYTHONPATH=$DIR:$PYTHONPATH
+
+# Create the run directory if it doesn't exist
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+# Start your Django Unicorn
+# Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
+exec venv/bin/gunicorn ${WSGI_MODULE}:app \
+  --name $NAME \
+  --workers $NUM_WORKERS \
+  --user=$USER --group=$GROUP \
+  --log-level=debug \
+  --bind=unix:$SOCKFILE
