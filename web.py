@@ -15,7 +15,7 @@ def run():
     data = Runner()
     csv = data.output_csv()
 
-    response = send_file(csv)
+    response = send_file(csv, mimetype='text/csv; charset=utf-8')
     response.headers["Content-Disposition"] = "attachment; filename=data.csv"
     return response
 
