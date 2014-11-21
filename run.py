@@ -88,7 +88,9 @@ class Runner(object):
 
     def get_character(self, character):
         # print u'Processing {}'.format(character['name'])
-        pickle_file = u'pickles/{}.txt'.format(hashlib.md5(character['name']))
+        md5 = hashlib.md5()
+        md5.update(character['name'])
+        pickle_file = u'pickles/{}.txt'.format(md5.hexdigest())
 
         try:
             return pickle.load(file(pickle_file))
