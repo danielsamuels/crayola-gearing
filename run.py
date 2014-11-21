@@ -146,8 +146,8 @@ class Runner(object):
             self.classes[data['class']],
             data['talents'][0]['spec']['name'],
             data['talents'][1]['spec']['name'],
-            data['items']['averageItemLevel'],
             data['items']['averageItemLevelEquipped'],
+            data['items']['averageItemLevel'],
             data['professions']['primary'][0]['name'],
             data['professions']['primary'][0]['rank'],
             data['professions']['primary'][1]['name'],
@@ -157,7 +157,6 @@ class Runner(object):
         pickle.dump(char_data, file(pickle_file, 'w'))
 
         return char_data
-
 
     def output_csv(self):
         # print 'Writing CSV'
