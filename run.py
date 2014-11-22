@@ -7,7 +7,8 @@ import unicodecsv
 from urllib import quote
 
 ITEM_QUALITY = {
-    2: 'c',
+    1: 'c',
+    2: 'u',
     3: 'r',
     4: 'e',
     5: 'l',
