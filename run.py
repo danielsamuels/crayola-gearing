@@ -81,11 +81,16 @@ class Runner(object):
             guild=quote(self.guild)
         )
 
-        return [
-            member['character'] for member in requests.get(url).json()['members']
-            if member['rank'] in self.guild_ranks
-            and member['character']['level'] == 100
-        ]
+        member_data = requests.get(url).json()
+
+        if 'members' in member_data:
+            return [
+                member['character'] for member in requests.get(url).json()['members']
+                if member['rank'] in self.guild_ranks
+                and member['character']['level'] == 100
+            ]
+        else:
+            return []
 
     def get_character(self, character):
         # print u'Processing {}'.format(character['name'])
