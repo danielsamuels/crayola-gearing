@@ -112,7 +112,7 @@ class Runner(object):
         data = requests.get(url).json()
 
         if 'name' not in data:
-            print data
+            print character['name'], character['realm'], data
             return []
 
         # Character
