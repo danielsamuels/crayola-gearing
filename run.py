@@ -111,6 +111,10 @@ class Runner(object):
 
         data = requests.get(url).json()
 
+        if 'name' not in data:
+            print data
+            return []
+
         # Character
         # Class
         # Main Spec
