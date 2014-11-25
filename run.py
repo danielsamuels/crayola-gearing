@@ -131,16 +131,19 @@ class Runner(object):
         # Trinket 1
         # Trinket 2
 
-        items = [
-            '{} {}'.format(
-                data['items'][slot]['itemLevel'],
-                ITEM_QUALITY[data['items'][slot]['quality']],
-            )
-            if slot in data['items']
-            else 'N/A'
-            for slot in ITEM_SLOTS
+        if 'items' in data:
+            items = [
+                '{} {}'.format(
+                    data['items'][slot]['itemLevel'],
+                    ITEM_QUALITY[data['items'][slot]['quality']],
+                )
+                if slot in data['items']
+                else 'N/A'
+                for slot in ITEM_SLOTS
 
-        ]
+            ]
+        else:
+            items = ['N/A' for slot in ITEM_SLOTS]
 
         char_data = [
             data['name'],
