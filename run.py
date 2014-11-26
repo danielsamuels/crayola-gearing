@@ -96,15 +96,9 @@ class Runner(object):
             return []
 
     def get_character(self, character):
-        # print u'Processing {}'.format(character['name'])
         md5 = hashlib.md5()
         md5.update(character['name'].encode('utf8'))
         pickle_file = u'pickles/{}.txt'.format(md5.hexdigest())
-
-        try:
-            return pickle.load(file(pickle_file))
-        except:
-            pass
 
         url = u'{base_api_url}/character/{realm}/{name}?fields=items,professions,talents'.format(
             base_api_url=self.base_api_url,
@@ -115,8 +109,17 @@ class Runner(object):
         data = requests.get(url).json()
 
         if 'name' not in data:
+            # Try to load from the pickle.
+            try:
+                return pickle.load(file(pickle_file))
+            except:
+                pass
+
             print character['name'], character['realm'], data
             return []
+
+        # Delete the pickle file.
+        os.remove(pickle_file)
 
         # Character
         # Class
