@@ -119,7 +119,10 @@ class Runner(object):
             return []
 
         # Delete the pickle file.
-        os.remove(pickle_file)
+        try:
+            os.remove(pickle_file)
+        except:
+            pass
 
         # Character
         # Class
