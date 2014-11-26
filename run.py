@@ -180,7 +180,18 @@ class Runner(object):
 
         return char_data
 
-    def output_csv(self):
+    def save_csv(self):
+        try:
+            os.remove('output.csv')
+        except:
+            pass
+
+        with open('output.csv', 'wb') as f:
+            w = unicodecsv.writer(f, encoding='utf-8')
+            for row in self.parsed_characters:
+                w.writerow(row)
+
+    def return_csv(self):
         # print 'Writing CSV'
         f = StringIO()
         w = unicodecsv.writer(f, encoding='utf-8')
@@ -192,4 +203,7 @@ class Runner(object):
         return f
 
 if __name__ == '__main__':
-    Runner()
+    app = Runner()
+
+    # Save the csv.
+    app.save_csv()
