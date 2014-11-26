@@ -68,6 +68,9 @@ class Runner(object):
             for character in self.get_characters()
         ]
 
+        # Order characters by iLevel.
+        self.parsed_characters.sort(key=lambda x: x[4], reverse=True)
+
     def build_classes(self):
         api_classes = requests.get('http://eu.battle.net/api/wow/data/character/classes').json()['classes']
 
