@@ -151,10 +151,7 @@ class Runner(object):
 
         if 'items' in data:
             items = [
-                '{} {}'.format(
-                    data['items'][slot]['itemLevel'],
-                    ITEM_QUALITY[data['items'][slot]['quality']],
-                )
+                data['items'][slot]['itemLevel']
                 if slot in data['items']
                 else 'N/A'
                 for slot in ITEM_SLOTS
