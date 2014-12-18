@@ -50,8 +50,8 @@ class Runner(object):
 
     realm = 'Lightbringer'
     guild = 'Crayola Inc'
-    guild_ranks = [0, 1, 3, 4]
-    guild_alt_ranks = [2, 5]
+    guild_ranks = [1, 3, 4]
+    guild_alt_ranks = [0, 2, 5]
 
     base_api_url = 'http://eu.battle.net/api/wow'
 
