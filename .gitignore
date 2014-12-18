@@ -1,4 +1,5 @@
 pickles/
 output.csv
+output*
 .venv
 *.pyc
