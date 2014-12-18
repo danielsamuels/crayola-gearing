@@ -1,4 +1,3 @@
-
 from raven.contrib.flask import Sentry
 
 from run import Runner
@@ -11,8 +10,12 @@ sentry = Sentry(app)
 
 
 @app.route("/")
-def run():
-    return send_file('output.csv', mimetype='text/csv; charset=utf-8')
+def mains():
+    return send_file('output-mains.csv', mimetype='text/csv; charset=utf-8')
+
+@app.route("/alts")
+def alts():
+    return send_file('output-alts.csv', mimetype='text/csv; charset=utf-8')
 
 if __name__ == "__main__":
     app.run()

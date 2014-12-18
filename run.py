@@ -51,10 +51,18 @@ class Runner(object):
     realm = 'Lightbringer'
     guild = 'Crayola Inc'
     guild_ranks = [0, 1, 3, 4]
+    guild_alt_ranks = [2, 5]
 
     base_api_url = 'http://eu.battle.net/api/wow'
 
-    def __init__(self):
+    def __init__(self, rank_type):
+        if rank_type == 'mains':
+            self.type = 'mains'
+            self.ranks = self.guild_ranks
+        else:
+            self.type = 'alts'
+            self.ranks = self.guild_alt_ranks
+
         # Ensure the pickle directory is present.
         try:
             os.mkdir('pickles')
@@ -68,11 +76,15 @@ class Runner(object):
             for character in self.get_characters()
         ]
 
+        self.parsed_characters = [x for x in self.parsed_characters if x != []]
+
         # Order characters by iLevel.
         self.parsed_characters.sort(key=lambda x: x[4], reverse=True)
 
     def build_classes(self):
-        api_classes = requests.get('http://eu.battle.net/api/wow/data/character/classes').json()['classes']
+        api_classes = requests.get('{base_api_url}/data/character/classes'.format(
+            base_api_url=self.base_api_url
+        )).json()['classes']
 
         for cls in api_classes:
             self.classes[cls['id']] = cls['name']
@@ -89,7 +101,7 @@ class Runner(object):
         if 'members' in member_data:
             return [
                 member['character'] for member in requests.get(url).json()['members']
-                if member['rank'] in self.guild_ranks
+                if member['rank'] in self.ranks
                 and member['character']['level'] == 100
             ]
         else:
@@ -160,17 +172,20 @@ class Runner(object):
         else:
             items = ['N/A' for slot in ITEM_SLOTS]
 
+        if data['items']['averageItemLevelEquipped'] < 630:
+            return []
+
         char_data = [
             data['name'],
             self.classes[data['class']],
             data['talents'][0]['spec']['name'],
-            data['talents'][1]['spec']['name'],
+            data['talents'][1]['spec']['name'] if 'spec' in data['talents'][1] else '',
             data['items']['averageItemLevelEquipped'],
             data['items']['averageItemLevel'],
-            data['professions']['primary'][0]['name'],
-            data['professions']['primary'][0]['rank'],
-            data['professions']['primary'][1]['name'],
-            data['professions']['primary'][1]['rank']
+            data['professions']['primary'][0]['name'] if len(data['professions']['primary']) > 0 else '',
+            data['professions']['primary'][0]['rank'] if len(data['professions']['primary']) > 0 else '',
+            data['professions']['primary'][1]['name'] if len(data['professions']['primary']) > 1 else '',
+            data['professions']['primary'][1]['rank'] if len(data['professions']['primary']) > 1 else '',
         ] + items
 
         pickle.dump(char_data, file(pickle_file, 'w'))
@@ -179,11 +194,13 @@ class Runner(object):
 
     def save_csv(self):
         try:
-            os.remove('output.csv')
+            os.remove('output-{}.csv'.format(
+                self.type
+            ))
         except:
             pass
 
-        with open('output.csv', 'wb') as f:
+        with open('output-{}.csv'.format(self.type), 'wb') as f:
             w = unicodecsv.writer(f, encoding='utf-8')
             for row in self.parsed_characters:
                 w.writerow(row)
@@ -200,7 +217,8 @@ class Runner(object):
         return f
 
 if __name__ == '__main__':
-    app = Runner()
+    mains = Runner('mains')
+    mains.save_csv()
 
-    # Save the csv.
-    app.save_csv()
+    alts = Runner('alts')
+    alts.save_csv()
