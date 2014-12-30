@@ -176,7 +176,7 @@ class Runner(object):
             return []
 
         char_data = [
-            u'=HYPERLINK("http://eu.battle.net/wow/en/character/{realm}/{name}/advanced", "{name}")'.format(**data),
+            data['name'],
             self.classes[data['class']],
             data['talents'][0]['spec']['name'],
             data['talents'][1]['spec']['name'] if 'spec' in data['talents'][1] else '',
