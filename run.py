@@ -38,10 +38,15 @@ ITEM_SLOTS = [
 class Runner(object):
 
     # Ranks
-    # 0 - Guild Master
-    # 1 - Officer
-    # 3 - Raider
-    # 4 - Trial
+    # 0 - GM
+    # 1 - swe
+    # 2 - Officer
+    # 3 - Officer alt
+    # 4 - Raider
+    # 5 - Trial
+    # 6 - alt
+    # 7 - Playground
+    # 8 - Officer Trial
 
     classes = {}
 
@@ -50,8 +55,8 @@ class Runner(object):
 
     realm = 'Lightbringer'
     guild = 'Crayola Inc'
-    guild_ranks = [1, 3, 4]
-    guild_alt_ranks = [0, 2, 5]
+    guild_ranks = [0, 2, 4, 5]
+    guild_alt_ranks = [1, 3, 6]
 
     base_api_url = 'http://eu.battle.net/api/wow'
 
