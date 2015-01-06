@@ -57,6 +57,7 @@ class Runner(object):
     guild = 'Crayola Inc'
     guild_ranks = [0, 2, 4, 5]
     guild_alt_ranks = [1, 3, 6]
+    exclude_characters = ['Meah']
 
     base_api_url = 'http://eu.battle.net/api/wow'
 
@@ -79,6 +80,7 @@ class Runner(object):
         self.parsed_characters = [
             self.get_character(character)
             for character in self.get_characters()
+            if character['name'] not in self.exclude_characters
         ]
 
         self.parsed_characters = [x for x in self.parsed_characters if x != []]
